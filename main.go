@@ -19,8 +19,8 @@ const (
 )
 
 func main() {
-	// 签名时间,延迟200毫秒,不然总是出现bad handshake
-	date := time.Now().UTC().Add(200 * time.Millisecond).Format(time.RFC1123)
+	// 签名时间
+	date := time.Now().UTC().Format(time.RFC1123)
 	// 参与签名的字段 host ,date, request-line
 	signString := []string{"host: " + "tts-api.xfyun.cn", "date: " + date, "GET /v2/tts HTTP/1.1"}
 	// 使用换行符拼接,因为开发文档是这么要求的
