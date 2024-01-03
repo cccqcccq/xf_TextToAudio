@@ -34,6 +34,7 @@ func main() {
 			"aue": "lame",
 			"sfl": 1,
 			"vcn": "xiaoyan",
+			"tte": "UTF8",
 		},
 		Data: map[string]any{
 			"text":   base64.StdEncoding.EncodeToString([]byte("要转换为语音的文本")),
