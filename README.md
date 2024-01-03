@@ -12,4 +12,5 @@ golang实现讯飞文字转语音webapi
 
 
 将文本改成要生成的文本
+
 经常出现bad handshake但偶尔可以连接成功是因为转base64时使用了URLEncoding而不是StdEncoding
