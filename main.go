@@ -37,7 +37,7 @@ func main() {
 			"tte": "UTF8",
 		},
 		Data: map[string]any{
-			"text":   base64.StdEncoding.EncodeToString([]byte("要转换位语音的文本")),
+			"text":   base64.StdEncoding.EncodeToString([]byte("要转换为语音的文本")),
 			"status": 2,
 		},
 	}
