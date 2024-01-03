@@ -37,7 +37,7 @@ func main() {
 			"tte": "UTF8",
 		},
 		Data: map[string]any{
-			"text":   base64.StdEncoding.EncodeToString([]byte("要转换为语音的文本")),
+			"text":   base64.StdEncoding.EncodeToString([]byte("要转换位语音的文本")),
 			"status": 2,
 		},
 	}
@@ -46,23 +46,32 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	// 接收数据并写入文件
-	_, message, err := conn.ReadMessage()
-	if err != nil {
-		panic(err)
-	}
+	// 创建文件
 	file, _ := os.Create(time.Now().Format("2006-01-02-15-04-05") + ".mp3")
+	defer file.Close()
+	for {
+		// 循环读取数据
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			panic(err)
+		}
+		// 判断是否是结束
+		if createFile(file, message) == 2 {
+			break
+		}
+	}
+	fmt.Println("创建成功")
+}
+
+func createFile(file *os.File, message []byte) int {
+	// 写入文件
 	data := make(map[string]any)
 	json.Unmarshal(message, &data)
-	decodeString, err := base64.StdEncoding.DecodeString(data["data"].(map[string]any)["audio"].(string))
-	if err != nil {
-		return
-	}
-	_, err = file.WriteString(string(decodeString))
-	if err == nil {
-		fmt.Println("创建成功")
-	}
+	decodeString, _ := base64.StdEncoding.DecodeString(data["data"].(map[string]any)["audio"].(string))
+	status, _ := data["data"].(map[string]any)["status"].(float64)
+	file.WriteString(string(decodeString))
+	// 返回创建状态
+	return int(status)
 }
 
 func createUrl() (baseurl string) {
@@ -102,3 +111,4 @@ type requestJson struct {
 	Business map[string]any    `json:"business"`
 	Data     map[string]any    `json:"data"`
 }
+
